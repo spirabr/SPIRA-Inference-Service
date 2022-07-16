@@ -1,0 +1,24 @@
+version: "3.5"
+ 
+services:
+  inference-service:
+    build: .
+    restart: always
+    env_file:
+      - envs/message_service.env
+      - envs/message_listener.env
+      - envs/simple_storage.env
+    image: api_image
+    command: python3 main.py
+    networks:
+      - nats-bridge
+      - minio-bridge
+    
+
+networks:
+  nats-bridge:
+    external: true
+
+  minio-bridge:
+    external: true
+  
