@@ -31,7 +31,7 @@ async def subscribe_to_channel(
         raise LogicException("cound not subscribe to channel")
 
 
-async def listen_for_messages_and_update(
+async def listen_for_messages_and_respond(
     simple_storage_port: SimpleStoragePort,
     message_service_port: MessageServicePort,
     model_register_port: ModelRegisterPort,
