@@ -1,5 +1,6 @@
 import json
 from core.model.inference import Inference
+from core.model.message_service import RequestLetter
 
 from core.model.result import ResultUpdate
 
@@ -15,7 +16,7 @@ class MessageServicePort:
     def __init__(self, message_service_adapter):
         self._message_service_adapter = message_service_adapter
 
-    async def send_message(self, letter: ResultUpdate):
+    async def send_message(self, letter: RequestLetter):
         """sends a serialized json to the message service
 
         Args:
@@ -41,7 +42,7 @@ class MessageServicePort:
         """
         await self._message_service_adapter.subscribe(receiving_channel)
 
-    async def wait_for_message(self, receiving_channel: str) -> ResultUpdate:
+    async def wait_for_message(self, receiving_channel: str) -> Inference:
         """waits until a message arrives in the given channel from the message service
 
         Args:
