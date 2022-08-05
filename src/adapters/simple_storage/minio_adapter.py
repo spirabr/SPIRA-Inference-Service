@@ -1,7 +1,6 @@
-from io import BytesIO
 import os
+from typing import Tuple
 from minio import Minio
-from minio.deleteobjects import DeleteObject
 
 
 class MinioAdapter:
@@ -32,7 +31,7 @@ class MinioAdapter:
         if not self._client.bucket_exists(bucket_name):
             self._client.make_bucket(bucket_name)
 
-    def get_inference_file(self, inference_id: str, filename: str):
+    def get_inference_file(self, inference_id: str, filename: str) -> Tuple[bytes, str]:
         """gets the file in minIO server
 
         Args:
