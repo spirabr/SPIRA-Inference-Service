@@ -13,3 +13,10 @@ class Inference(BaseModel):
 class UploadAudio(BaseModel):
     content: bytes
     filename: str
+
+
+class InferenceFiles(BaseModel):
+    aceite: UploadAudio
+    vogal_sustentada: UploadAudio
+    parlenda_ritmada: UploadAudio
+    frase: UploadAudio
