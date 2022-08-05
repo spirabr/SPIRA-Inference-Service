@@ -17,11 +17,12 @@ class MessageListenerSettings(BaseSettings):
 
     Attributes:
         loop_interval (float) : time interval between loop iterations
-        central_channel (str) : message service channel used to receive update messages
-
+        receiving_channel (str) : message service channel used to receive inference requests
+        central_channel (str) : message service channel used to send inference responses
     """
 
     loop_interval: float
+    receiving_channel: str
     central_channel: str
 
 
