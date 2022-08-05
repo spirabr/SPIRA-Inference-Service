@@ -8,3 +8,8 @@ class Inference(BaseModel):
     user_id: str
     model_id: str
     status: str
+
+
+class UploadAudio(BaseModel):
+    content: bytes
+    filename: str
