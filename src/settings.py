@@ -19,6 +19,7 @@ class MessageListenerSettings(BaseSettings):
         loop_interval (float) : time interval between loop iterations
         receiving_channel (str) : message service channel used to receive inference requests
         central_channel (str) : message service channel used to send inference responses
+
     """
 
     loop_interval: float
@@ -34,6 +35,7 @@ class SimpleStorageSettings(BaseSettings):
         bucket_name (str) : name of the bucket used by the app
         minio_access_key (str) : minio access credentials
         minio_secret_key (str) : minio credentials
+        default_extension (str) : default extension of audio files in storage
 
     """
 
@@ -41,6 +43,7 @@ class SimpleStorageSettings(BaseSettings):
     bucket_name: str
     minio_access_key: str
     minio_secret_key: str
+    default_extension: str
 
 
 class Settings:
