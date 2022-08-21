@@ -2,14 +2,43 @@ version: "3.5"
  
 services:
   inference-service:
-    build: .
+    build:
+      context: .
+      target: prod
+    profiles:
+      - production
     restart: always
+    image: inference-service
+    container_name: spira-api-inference-service-1
     env_file:
       - envs/message_service.env
       - envs/message_listener.env
       - envs/simple_storage.env
-    image: api_image
-    command: python3 main.py
+    command: python main.py
+    ports:
+      - 3000:8000 
+    networks:
+      - nats-bridge
+      - minio-bridge
+    
+  inference-tester:
+    build:
+      context: .
+      target: dev 
+    profiles:
+      - test
+    restart: always
+    image: inference-tester
+    container_name: spira-api-inference-tester-1
+    env_file:
+      - envs/message_service.env
+      - envs/message_listener.env
+      - envs/simple_storage.env
+    command: python main.py
+    volumes:
+      - ".:/app/"
+    ports:
+      - 3000:8000 
     networks:
       - nats-bridge
       - minio-bridge
