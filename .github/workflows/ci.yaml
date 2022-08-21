@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "tests/*"
+  pull_request:
+    branches:
+      - "*"
+      - "*/*"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        python-version: [3.8]
+        poetry-version: [1.1.13]
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "configuring tests..."
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Switch to Current Branch
+        run: git checkout ${{ env.BRANCH }}
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run tests
+        run: make all-tests
