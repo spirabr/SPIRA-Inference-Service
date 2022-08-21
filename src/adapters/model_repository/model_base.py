@@ -9,4 +9,14 @@ class ModelBase(ABC):
     def predict(
         self, inference: Inference, inference_files: InferenceFiles
     ) -> ResultUpdate:
+        """returns the model prediction for the given input
+
+        Args:
+            inference (Inference) : inference object containing inference metadata
+            inference_files (InferenceFiles) : inference audio files object
+
+        Returns:
+            ResultUpdate object containing the model prediction
+
+        """
         pass
