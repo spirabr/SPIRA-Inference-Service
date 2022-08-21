@@ -38,10 +38,7 @@ services:
     volumes:
       - ".:/app/"
     ports:
-      - 3000:8000 
-    networks:
-      - nats-bridge
-      - minio-bridge
+      - 3000:8000
     
   inference-tester:
     build:
