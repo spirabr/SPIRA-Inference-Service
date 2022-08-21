@@ -34,7 +34,7 @@ services:
       - envs/message_service.env
       - envs/message_listener.env
       - envs/simple_storage.env
-    command: python main.py
+    entrypoint: python3 -m py.test
     volumes:
       - ".:/app/"
     ports:
