@@ -45,25 +45,6 @@ services:
       - ".:/app/"
     ports:
       - 3000:8000
-    
-  inference-tester:
-    build:
-      context: .
-      target: dev 
-    profiles:
-      - test
-    restart: always
-    image: inference-tester
-    container_name: spira-api-inference-tester-1
-    env_file:
-      - envs/message_service.env
-      - envs/message_listener.env
-      - envs/simple_storage.env
-    entrypoint: python3 -m py.test
-    volumes:
-      - ".:/app/"
-    ports:
-      - 3000:8000
     networks:
       - nats-network
       - minio-network
