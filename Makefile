@@ -34,11 +34,11 @@ STOP-CONTAINERS := docker compose stop
 
 # --- UNIT TESTS --- #
 
-# adapter-unit-tests:
-# 	$(call warn,"running unit tests for adapters")
-# 	$(BUILD-API-IMAGE)
-# 	$(RUN-CONTAINERS) tests/unit_tests/adapters || $(call failure,"failed in unit tests for adapters!")
-# 	$(call success,"passed in unit tests for adapters!")
+adapter-unit-tests:
+	$(call warn,"running unit tests for adapters")
+	$(BUILD-API-IMAGE)
+	$(RUN-CONTAINERS) tests/unit_tests/adapters || $(call failure,"failed in unit tests for adapters!")
+	$(call success,"passed in unit tests for adapters!")
 
 port-unit-tests:
 	$(call warn,"running unit tests for ports")
@@ -54,6 +54,7 @@ port-unit-tests:
 	
 
 all-unit-tests:
+	$(MAKE) adapter-unit-tests
 	$(MAKE) port-unit-tests	
 
 # --- UNIT TESTS --- #
