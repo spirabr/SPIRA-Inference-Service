@@ -7,6 +7,9 @@ services:
       target: prod
     profiles:
       - production
+    depends_on:
+      - minio
+      - nats-server
     restart: always
     image: inference-service
     container_name: spira-api-inference-service-1
@@ -18,8 +21,8 @@ services:
     ports:
       - 3000:8000 
     networks:
-      - nats-bridge
-      - minio-bridge
+      - nats-network
+      - minio-network
     
   inference-tester:
     build:
@@ -27,6 +30,9 @@ services:
       target: dev 
     profiles:
       - test
+    depends_on:
+      - minio
+      - nats-server
     restart: always
     image: inference-tester
     container_name: spira-api-inference-tester-1
@@ -39,12 +45,48 @@ services:
       - ".:/app/"
     ports:
       - 3000:8000
-    
+    networks:
+      - nats-network
+      - minio-network
+
+  nats-server:
+    image: nats:2.8.4
+    restart: always
+    profiles:
+      - production
+      - test
+    ports:
+      - 4222:4222
+      - 8222:8222
+    networks:
+      - nats-network
+
+  minio:
+    image: minio/minio
+    restart: always
+    profiles:
+      - production
+      - test
+    ports:
+      - 9000:9000
+      - 9001:9001
+    command: server /data --console-address ':9001' --address ':9000'
+    volumes:
+      - minio_data:/data
+    env_file:
+      - envs/minio.env
+    networks:
+      - minio-network
 
 networks:
-  nats-bridge:
-    external: true
+  nats-network:
+    driver: bridge
+    name: nats-bridge
 
-  minio-bridge:
-    external: true
-  
+  minio-network:
+    driver: bridge
+    name: minio-bridge
+
+volumes:
+  minio_data:
+    
