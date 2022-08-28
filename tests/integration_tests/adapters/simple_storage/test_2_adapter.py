@@ -1,8 +1,5 @@
 from io import BytesIO
 import os
-from typing import Iterable
-from mock import ANY, MagicMock, patch
-from pydantic import BaseModel
 import pytest
 from adapters.simple_storage.minio_adapter import MinioAdapter
 from settings import Settings
