@@ -30,7 +30,7 @@ def test_send_message(message_service_port: MessageServicePort):
             message_service_port.send_message(
                 RequestLetter(
                     content=ResultUpdate(
-                        inference_id="fake_id", output=0.1, diagnosis="fake_diagnosis"
+                        inference_id="fake_id", output=[0.1], diagnosis="fake_diagnosis"
                     ),
                     publishing_channel="fake_topic",
                 ),
@@ -40,7 +40,7 @@ def test_send_message(message_service_port: MessageServicePort):
             json.dumps(
                 {
                     "inference_id": "fake_id",
-                    "output": 0.1,
+                    "output": [0.1],
                     "diagnosis": "fake_diagnosis",
                 }
             ),
