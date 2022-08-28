@@ -1,5 +1,5 @@
 import pytest
-from src.adapters.model_repository.mlflow_adapter import MLFlowAdapter
+from src.adapters.model_register.mlflow_adapter import MLFlowAdapter
 from src.core.model.inference import Inference, InferenceFiles, UploadAudio
 from src.core.model.result import ResultUpdate
 
@@ -45,12 +45,9 @@ def test_predict_method(adapter_instance: MLFlowAdapter):
         frase=UploadAudio(content=frase.read(), filename="frase.wav"),
     )
 
-    result = adapter_instance.predict(
+    output, diagnosis = adapter_instance.predict(
         inference,
         inference_files,
     )
-    assert result == ResultUpdate(
-        inference_id="fake_inference_id",
-        output=[0.1, 0.2, 0.4],
-        diagnosis="negative",
-    )
+    assert output == [0.1, 0.2, 0.4]
+    assert diagnosis == "negative"

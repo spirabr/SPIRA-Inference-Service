@@ -26,7 +26,7 @@ endef
 # --- CUSTOM COMMANDS --- #
 
 BUILD-API-IMAGE := docker compose build inference-tester
-RUN-CONTAINERS := docker compose --profile test run --rm inference-tester
+RUN-CONTAINERS := docker compose --profile test run --rm inference-tester -v
 STOP-CONTAINERS := docker compose stop
 
 # --- CUSTOM COMMANDS --- #
