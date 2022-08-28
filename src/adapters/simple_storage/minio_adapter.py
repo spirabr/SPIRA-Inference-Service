@@ -1,3 +1,4 @@
+from io import BytesIO
 import os
 from typing import Tuple
 from minio import Minio
@@ -31,6 +32,29 @@ class MinioAdapter:
         if not self._client.bucket_exists(bucket_name):
             self._client.make_bucket(bucket_name)
 
+    def store_inference_file(
+        self, inference_id: str, file_type: str, file_extension: str, raw_file: BytesIO
+    ):
+        """stores the file in minIO server
+
+        Args:
+            inference_id (dict) : inference id
+            file_type (str) : type of the file being stored
+            file_extension (dict) : file extension
+            raw_file (BytesIO) : file stream
+
+        Returns:
+            None
+
+        """
+        length = raw_file.getbuffer().nbytes
+        self._client.put_object(
+            self._bucket_name,
+            inference_id + os.sep + file_type + file_extension,
+            raw_file,
+            length,
+        )
+
     def get_inference_file(self, inference_id: str, filename: str) -> Tuple[bytes, str]:
         """gets the file in minIO server
 
@@ -39,13 +63,18 @@ class MinioAdapter:
             filename (str) : name of the file being stored
 
         Returns:
-            None
+            tuple containing file content as byte array and string containing file extension
 
         """
-        return (
-            self._client.get_object(
-                self._bucket_name,
-                inference_id + os.sep + filename + self._default_extension,
-            ),
-            self._default_extension,
+        response = self._client.get_object(
+            self._bucket_name,
+            inference_id + os.sep + filename + self._default_extension,
         )
+        try:
+            return (
+                response.data,
+                self._default_extension,
+            )
+        finally:
+            response.close()
+            response.release_conn()

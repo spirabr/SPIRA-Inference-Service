@@ -81,18 +81,15 @@ all-unit-tests:
 # 	    || $(call failure,"failed in connection tests for message service!")
 # 	$(call success,"passed in connection tests for message service!")
 	
-# simple-storage-connection-tests:
-# 	$(call warn,"running connection tests for simple storage")
-# 	$(RUN-CONTAINERS) tests/integration_tests/connections/simple_storage \
-# 	    || $(call failure,"failed in connection tests for simple storage!")
-# 	$(call success,"passed in connection tests for simple storage!")
+simple-storage-integration-tests:
+	$(call warn,"running integration tests for simple storage")
+	$(RUN-CONTAINERS) tests/integration_tests/adapters/simple_storage \
+	    || $(call failure,"failed in integration tests for simple storage!")
+	$(call success,"passed in integration tests for simple storage!")
 	
 
-# all-integration-tests:
-# 	$(MAKE) endpoint-integration-tests
-# 	$(MAKE) database-connection-tests
-# 	$(MAKE) message-service-connection-tests
-# 	$(MAKE) simple-storage-connection-tests
+all-integration-tests:
+	$(MAKE) simple-storage-integration-tests
 
 # --- INTEGRATION TESTS --- #
 
@@ -101,5 +98,6 @@ all-unit-tests:
 all-tests:
 	$(STOP-CONTAINERS)
 	$(MAKE) all-unit-tests
+	$(MAKE) all-integration-tests
 
 	
