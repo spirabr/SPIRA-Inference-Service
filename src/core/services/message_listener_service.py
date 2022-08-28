@@ -1,4 +1,3 @@
-from urllib import response
 from core.model.exception import LogicException
 from core.model.inference import Inference, InferenceFiles
 from core.model.message_service import RequestLetter
