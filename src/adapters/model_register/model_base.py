@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List, Tuple
 
 from core.model.result import ResultUpdate
 from core.model.inference import Inference, InferenceFiles
@@ -8,7 +9,7 @@ class ModelBase(ABC):
     @abstractmethod
     def predict(
         self, inference: Inference, inference_files: InferenceFiles
-    ) -> ResultUpdate:
+    ) -> Tuple[List[float], str]:
         """returns the model prediction for the given input
 
         Args:
@@ -16,7 +17,7 @@ class ModelBase(ABC):
             inference_files (InferenceFiles) : inference audio files object
 
         Returns:
-            ResultUpdate object containing the model prediction
+            Tuple with list of outputs and diagnosis string
 
         """
         pass

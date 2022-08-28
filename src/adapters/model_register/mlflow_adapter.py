@@ -1,7 +1,8 @@
+from typing import List, Tuple
 import mlflow as mlf
 import mlflow.pytorch as pt
 
-from adapters.model_repository.model_base import ModelBase
+from adapters.model_register.model_base import ModelBase
 from core.model.inference import Inference, InferenceFiles
 from ...core.model.result import ResultUpdate
 
@@ -13,7 +14,7 @@ class MLFlowAdapter:
 
     def predict(
         self, inference: Inference, inference_files: InferenceFiles
-    ) -> ResultUpdate:
+    ) -> Tuple[List[float], str]:
         """returns the model prediction for the given input
 
         Args:
@@ -21,7 +22,8 @@ class MLFlowAdapter:
             inference_files (InferenceFiles) : inference audio files object
 
         Returns:
-            ResultUpdate object containing the model prediction
+            Tuple where the first element is a list of floats containing the output of the model
+            and the second element is the string containing the final diagnosis
 
         """
         return self._model.predict(inference, inference_files)
