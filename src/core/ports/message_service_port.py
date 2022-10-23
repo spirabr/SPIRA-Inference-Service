@@ -52,7 +52,29 @@ class MessageServicePort:
             result update form
 
         """
-        message_dict = json.loads(
-            await self._message_service_adapter.wait_for_message(receiving_channel)
-        )
-        return Inference(**message_dict)
+        # message_dict = json.loads(
+        #     await self._message_service_adapter.wait_for_message(receiving_channel)
+        # )
+        FAKE_INFERENCE_WITH_ID_1 = {
+            "id": "629f815d6abaa3c5e6cf7c16",
+            "gender": "M",
+            "age": 23,
+            "rgh": "fake_rgh",
+            "covid_status": "Sim",
+            "mask_type": "None",
+            "user_id": "507f191e810c19729de860ea",
+            "model_id": "629f992d45cda830033cf4cd",
+            "status": "processing",
+            "cid": "fake_cid",
+            "bpm": "fake_bpm",
+            "created_in": "2022-07-18 17:07:16.954632",
+            "respiratory_frequency": "123",
+            "respiratory_insufficiency_status": "Sim",
+            "location": "h1",
+            "last_positive_diagnose_date": "",
+            "hospitalized": "TRUE",
+            "hospitalization_start": "2022-07-18 17:07:16.954632",
+            "hospitalization_end": "2022-07-18 17:07:16.954632",
+            "spo2": "123",
+        }
+        return Inference(**FAKE_INFERENCE_WITH_ID_1)

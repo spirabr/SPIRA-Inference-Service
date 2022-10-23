@@ -36,7 +36,7 @@ async def listen_for_messages_and_respond(
     message_service_port: MessageServicePort,
     model_register_port: ModelRegisterPort,
     receiving_channel: str,
-    response_channel: str,
+    responding_channel: str,
 ) -> None:
     """waits for a message to arrive at the receiving channel in message service
         and return the prediction
@@ -46,7 +46,7 @@ async def listen_for_messages_and_respond(
         message_service_port (MessageServicePort) : message service port
         model_register_port (ModelRegisterPort) : model register port instance
         receiving_channel (str) : inference requests channel
-        response_channel (str) : channel in which prediction is returned
+        responding_channel (str) : channel in which prediction is returned
 
     Returns:
         None
@@ -70,7 +70,7 @@ async def listen_for_messages_and_respond(
         )
 
         await message_service_port.send_message(
-            RequestLetter(content=result_update, publishing_channel=response_channel)
+            RequestLetter(content=result_update, publishing_channel=responding_channel)
         )
 
     except LogicException:

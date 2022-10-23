@@ -46,6 +46,19 @@ class SimpleStorageSettings(BaseSettings):
     default_extension: str
 
 
+class ModelRegisterSettings(BaseSettings):
+    """Settings holding the environment variables for the MLFlowAdapter
+
+    Attributes:
+        mlflow_conn_url (str) : connection url to MLFlow server container
+        model_path (str) : path of the model to be loaded from model register
+
+    """
+
+    mlflow_conn_url: str
+    model_path: str
+
+
 class Settings:
     """Settings gathering the environment variables for all adapters
 
@@ -68,4 +81,8 @@ class Settings:
 
     simple_storage_settings = SimpleStorageSettings(
         _env_file="simple_storage.env", _env_file_encoding="utf-8"
+    )
+
+    model_register_settings = ModelRegisterSettings(
+        _env_file="model_register.env", _env_file_encoding="utf-8"
     )
