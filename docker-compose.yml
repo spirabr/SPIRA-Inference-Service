@@ -10,7 +10,7 @@ services:
     restart: always
     depends_on:
       - minio
-      - nats-server
+      - nats
       - mlflow_server
     image: ${INFERENCE_SERVICE_IMAGE_NAME}
     env_file:
@@ -36,7 +36,7 @@ services:
       - test
     depends_on:
       - minio
-      - nats-server
+      - nats
     restart: always
     image: inference-tester
     env_file:
@@ -53,7 +53,7 @@ services:
       - minio-network
       - mlflow-network
 
-  nats-server:
+  nats:
     image: nats:2.8.4
     restart: always
     profiles:
