@@ -1,3 +1,4 @@
+import logging
 from typing import List, Tuple
 import mlflow as mlf
 import pandas as pd
@@ -10,11 +11,12 @@ from core.model.inference import Inference, InferenceFiles
 
 class MLFlowAdapter:
     def __init__(self, conn_url, model_path):
-        print("setting mlflow adapter.", flush=True)
-        self._wait_for_server_connection(conn_url)
+        logging.info("setting mlflow adapter.")
+        self._wait_for_server_connection()
         mlf.set_registry_uri(conn_url)
-        print("connected to mlflow server.", flush=True)
+        logging.info("connected to mlflow server.")
         self._model = mlf.pyfunc.load_model(model_uri=model_path)
+        logging.info("model loaded successfully.")
         
     def predict(
         self, inference: Inference, inference_files: InferenceFiles
@@ -30,14 +32,7 @@ class MLFlowAdapter:
             and the second element is the string containing the final diagnosis
 
         """
-        return self._model.predict(self._build_dataframe(inference, inference_files))
+        return self._model.predict([inference.dict(),inference_files.dict()])
 
-    def _build_dataframe(inference: Inference, inference_files: InferenceFiles) -> DataFrame:
-        inference_dataframe = pd.DataFrame.from_dict(inference.dict())
-
-        inference_files_dataframe = pd.DataFrame.from_dict(inference_files.dict())
-
-        return pd.concat(inference_dataframe,inference_files_dataframe)
-
-    def _wait_for_server_connection(self, conn_url: str) -> None:
-        os.system("sleep 10")
+    def _wait_for_server_connection(self) -> None:
+        os.system("sleep 5")

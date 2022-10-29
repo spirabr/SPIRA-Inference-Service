@@ -8,10 +8,6 @@ services:
     profiles:
       - production
     restart: always
-    depends_on:
-      - minio
-      - nats
-      - mlflow_server
     image: ${INFERENCE_SERVICE_IMAGE_NAME}
     env_file:
       - envs/message_service.env
@@ -133,7 +129,7 @@ services:
       - envs/mlflow/mlflow.env
     command: mlflow server --backend-store-uri mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE} --default-artifact-root s3://mlflow/ --host 0.0.0.0
     networks:
-      - mlflow-network 
+      - mlflow-network
 
 networks:
   nats-network:
@@ -146,7 +142,7 @@ networks:
 
   mlflow-network:
     driver: bridge
-    name: mlflow
+    name: mlflow-bridge
 
 volumes:
   dbdata:

@@ -1,3 +1,4 @@
+import logging
 from adapters.listener.message_listener import run_listener
 from adapters.message_service.nats_adapter import NATSAdapter
 from adapters.model_register.mlflow_adapter import MLFlowAdapter
@@ -45,6 +46,6 @@ def configure_ports() -> Ports:
 
 
 if __name__ == "__main__":
-    print("starting listener process...", flush=True)
+    logging.info("starting listener process...")
     ports = configure_ports()
     run_listener(ports)

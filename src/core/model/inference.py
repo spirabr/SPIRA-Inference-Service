@@ -36,7 +36,7 @@ class InferenceFiles(BaseModel):
     aceite: UploadAudio
     sustentada: UploadAudio
     parlenda: UploadAudio
-    frase: Optional[UploadAudio]
+    frase: UploadAudio
 
 
 class Inference(InferenceCreation):

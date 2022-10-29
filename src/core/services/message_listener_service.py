@@ -1,3 +1,4 @@
+import logging
 from urllib import response
 from core.model.exception import LogicException
 from core.model.inference import Inference, InferenceFiles
@@ -61,21 +62,25 @@ async def listen_for_messages_and_respond(
         inference: Inference = await message_service_port.wait_for_message(
             receiving_channel
         )
-        inference_files: InferenceFiles = await _get_files(
+        logging.info("inference received.")
+        inference_files: InferenceFiles = _get_files(
             simple_storage_port, inference
         )
+        logging.info("audios received.")
 
         result_update: ResultUpdate = model_register_port.predict(
             inference, inference_files
         )
-
+        logging.info("prediction complete.")
+        logging.info(result_update)
         await message_service_port.send_message(
             RequestLetter(content=result_update, publishing_channel=responding_channel)
         )
 
     except LogicException:
         raise
-    except:
+    except Exception as e:
+        logging.error(e)
         raise LogicException("an error occurred while waiting for the messages")
 
 
@@ -95,14 +100,13 @@ def _get_files(
         exception, if there was an error while retrieving the files
 
     """
-    inference_files = InferenceFiles()
     try:
+        files = {}
         file_types = InferenceFiles.__fields__.keys()
         for file_type in file_types:
-            setattr(
-                inference_files,
-                file_types,
-                simple_storage_port.get_inference_file(inference.id, file_type),
-            )
-    except:
+            files[file_type] = simple_storage_port.get_inference_file(inference.id, file_type)
+
+        return InferenceFiles(**files)
+    except Exception as e:
+        logging.error(e)
         raise LogicException("cound not update inference result")
