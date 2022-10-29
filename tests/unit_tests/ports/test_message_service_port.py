@@ -8,6 +8,29 @@ from tests.mocks.nats_mock import NATSMock
 import pytest
 import asyncio
 
+INFERENCE_JSON_1_WITH_ID = {
+    "id": "fake_inference_id",
+    "gender": "M",
+    "age": 23,
+    "rgh": "fake_rgh",
+    "covid_status": "Sim",
+    "mask_type": "None",
+    "user_id": "507f191e810c19729de860ea",
+    "model_id": "629f994245cda830033cf4cf",
+    "status": "processing",
+    "cid": "fake_cid",
+    "bpm": "fake_bpm",
+    "created_in": "2022-07-18 17:07:16.954632",
+    "respiratory_frequency": "123",
+    "respiratory_insufficiency_status": "Sim",
+    "location": "h1",
+    "last_positive_diagnose_date": "",
+    "hospitalized": "TRUE",
+    "hospitalization_start": "2022-07-18 17:07:16.954632",
+    "hospitalization_end": "2022-07-18 17:07:16.954632",
+    "spo2": "123",
+}
+
 adapter_instance = NATSMock()
 
 
@@ -64,18 +87,7 @@ def test_subscribe(message_service_port: MessageServicePort):
 def test_wait_for_message(message_service_port: MessageServicePort):
     async def fake_wait_for_message(topic: str):
         return json.dumps(
-            {
-                "rgh": "fake_rgh",
-                "age": 30,
-                "sex": "M",
-                "covid_status": "Sim",
-                "mask_type": "None",
-                "model_id": "fake_model_id",
-                "status": "fake_status",
-                "user_id": "fake_user_id",
-                "created_in": "2022-07-18 17:07:16.954632",
-                "id": "fake_inference_id",
-            }
+            INFERENCE_JSON_1_WITH_ID
         )
 
     with patch.object(
@@ -85,16 +97,5 @@ def test_wait_for_message(message_service_port: MessageServicePort):
     ) as mock_method:
         return_value = asyncio.run(message_service_port.wait_for_message("fake_topic"))
         assert return_value == Inference(
-            **{
-                "rgh": "fake_rgh",
-                "age": 30,
-                "sex": "M",
-                "covid_status": "Sim",
-                "mask_type": "None",
-                "model_id": "fake_model_id",
-                "status": "fake_status",
-                "user_id": "fake_user_id",
-                "created_in": "2022-07-18 17:07:16.954632",
-                "id": "fake_inference_id",
-            }
+            **INFERENCE_JSON_1_WITH_ID
         )

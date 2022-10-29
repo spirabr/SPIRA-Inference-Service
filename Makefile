@@ -37,7 +37,7 @@ STOP-CONTAINERS := docker compose stop
 adapter-unit-tests:
 	$(call warn,"running unit tests for adapters")
 	$(BUILD-API-IMAGE)
-	$(RUN-CONTAINERS) tests/unit_tests/adapters || $(call failure,"failed in unit tests for adapters!")
+	$(RUN-CONTAINERS) tests/unit_tests/adapters -v || $(call failure,"failed in unit tests for adapters!")
 	$(call success,"passed in unit tests for adapters!")
 
 port-unit-tests:
@@ -62,25 +62,13 @@ all-unit-tests:
 
 # --- INTEGRATION TESTS --- #
 
-# endpoint-integration-tests:
-# 	$(call warn,"running integration tests for endpoints")
-# 	$(RUN-CONTAINERS) tests/integration_tests/endpoints \
-# 	    || $(call failure,"failed in integration tests for endpoints!")
-# 	$(call success,"passed in integration tests for endpoints!")
-	
-# database-connection-tests:
-# 	$(call warn,"running connection tests for database")
-# 	$(RUN-CONTAINERS) tests/integration_tests/connections/database \
-# 	    || $(call failure,"failed in connection tests for database!")
-# 	$(call success,"passed in connection tests for database!")
-
 message-service-integration-tests:
 	$(call warn,"running integration tests for message service")
 
 	$(RUN-CONTAINERS) tests/integration_tests/adapters/message_service \
 	    || $(call failure,"failed in integration tests for message service!")
 	$(call success,"passed in integration tests for message service!")
-	
+
 simple-storage-integration-tests:
 	$(call warn,"running integration tests for simple storage")
 	$(RUN-CONTAINERS) tests/integration_tests/adapters/simple_storage \

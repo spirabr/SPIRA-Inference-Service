@@ -7,22 +7,22 @@ services:
       target: prod
     profiles:
       - production
-    depends_on:
-      - minio
-      - nats-server
     restart: always
-    image: inference-service
-    container_name: spira-api-inference-service-1
+    image: ${INFERENCE_SERVICE_IMAGE_NAME}
     env_file:
       - envs/message_service.env
       - envs/message_listener.env
       - envs/simple_storage.env
+      - envs/model_register.env
     command: python main.py
     ports:
       - 3000:8000 
     networks:
       - nats-network
       - minio-network
+      - mlflow-network
+    volumes:
+      - "./src:/app/"
     
   inference-tester:
     build:
@@ -32,14 +32,14 @@ services:
       - test
     depends_on:
       - minio
-      - nats-server
+      - nats
     restart: always
     image: inference-tester
-    container_name: spira-api-inference-tester-1
     env_file:
       - envs/message_service.env
       - envs/message_listener.env
       - envs/simple_storage.env
+      - envs/model_register.env
     entrypoint: python3 -m py.test
     volumes:
       - ".:/app/"
@@ -48,8 +48,9 @@ services:
     networks:
       - nats-network
       - minio-network
+      - mlflow-network
 
-  nats-server:
+  nats:
     image: nats:2.8.4
     restart: always
     profiles:
@@ -77,6 +78,59 @@ services:
       - envs/minio.env
     networks:
       - minio-network
+      - mlflow-network
+
+  mlflow-mc:
+    profiles:
+      - production
+      - test
+    image: minio/mc:RELEASE.2022-06-26T18-51-48Z
+    depends_on:
+      - minio
+    env_file:
+      - envs/mlflow/mlflow.env
+      - envs/mlflow/mysql.env
+    entrypoint: >
+      /bin/sh -c "
+      /tmp/wait-for-it.sh minio:9000;
+      /usr/bin/mc alias set minio http://minio:9000 ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
+      /usr/bin/mc mb minio/mlflow;
+      exit 0;
+      "
+    volumes:
+      - ./wait-for-it.sh:/tmp/wait-for-it.sh
+    networks:
+      - mlflow-network
+
+  db:
+    profiles:
+      - production
+      - test
+    restart: always
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    env_file:
+      - envs/mlflow/mysql.env
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - mlflow-network
+
+  mlflow-server:
+    profiles:
+      - production
+      - test
+    restart: always
+    build: ./model_register_server/mlflow
+    image: ${MLFLOW_SERVER_IMAGE_NAME}
+    ports:
+      - 5000:5000
+    env_file:
+      - envs/mlflow/mlflow.env
+    command: mlflow server --backend-store-uri mysql+pymysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE} --default-artifact-root s3://mlflow/ --host 0.0.0.0
+    networks:
+      - mlflow-network
 
 networks:
   nats-network:
@@ -87,6 +141,11 @@ networks:
     driver: bridge
     name: minio-bridge
 
+  mlflow-network:
+    driver: bridge
+    name: mlflow-bridge
+
 volumes:
+  dbdata:
   minio_data:
-    
+  mlflow_minio_data:

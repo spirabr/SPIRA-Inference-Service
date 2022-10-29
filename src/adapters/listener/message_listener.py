@@ -1,5 +1,6 @@
 from asyncio import sleep
 import asyncio
+import logging
 from core.ports.message_service_port import MessageServicePort
 from core.ports.model_register_port import ModelRegisterPort
 from core.ports.ports import Ports
@@ -34,7 +35,7 @@ async def listen_for_messages_loop(
             message_service_port, Settings.message_listener_settings.receiving_channel
         )
     except Exception as e:
-        print(e, flush=True)
+        logging.error(e)
 
     while True:
         await sleep(Settings.message_listener_settings.loop_interval)
@@ -47,7 +48,7 @@ async def listen_for_messages_loop(
                 Settings.message_listener_settings.central_channel,
             )
         except Exception as e:
-            print(e, flush=True)
+            logging.error(e)
 
 
 def run_listener(ports: Ports):
