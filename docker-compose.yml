@@ -39,6 +39,7 @@ services:
       - envs/message_service.env
       - envs/message_listener.env
       - envs/simple_storage.env
+      - envs/model_register.env
     entrypoint: python3 -m py.test
     volumes:
       - ".:/app/"

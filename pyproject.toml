@@ -16,6 +16,7 @@ pytest = "^7.1.2"
 pytest-asyncio = "^0.19.0"
 SQLAlchemy = "^1.4.42"
 boto3 = "^1.24.96"
+black = "^22.10.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^22.6.0", allow-prereleases = true}
