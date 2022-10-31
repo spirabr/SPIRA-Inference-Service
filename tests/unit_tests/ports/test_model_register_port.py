@@ -18,6 +18,7 @@ INFERENCE_JSON_1_WITH_ID = {
     "user_id": "507f191e810c19729de860ea",
     "model_id": "629f994245cda830033cf4cf",
     "status": "processing",
+    "local": "hospital_1",
     "cid": "fake_cid",
     "bpm": "fake_bpm",
     "created_in": "2022-07-18 17:07:16.954632",
