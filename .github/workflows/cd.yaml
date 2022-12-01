@@ -24,7 +24,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Switch to Current Branch
-        run: git checkout feature/cd-pipeline
+        run: git checkout main
 
       - name: Set Env
         run: |
