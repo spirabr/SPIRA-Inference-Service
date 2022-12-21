@@ -15,7 +15,7 @@ class MLFlowAdapter:
         self._wait_for_server_connection()
         mlf.set_registry_uri(conn_url)
         logging.info("connected to mlflow server.")
-        mlflow.pyfunc.get_model_dependencies(model_path)
+        mlf.pyfunc.get_model_dependencies(model_path)
         self._model = mlf.pyfunc.load_model(model_uri=model_path)
         logging.info("model loaded successfully.")
         
