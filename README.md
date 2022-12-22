@@ -1,5 +1,4 @@
 # SPIRA-Inference-Service
-SPIRA Inference Service
 
 ## Project Overview
 
