@@ -28,7 +28,7 @@ services:
     build:
       context: .
       target: dev 
-    image: ${INFERENCE_SERVICE_IMAGE_NAME}
+    image: ${INFERENCE_SERVICE_TEST_IMAGE_NAME}
     entrypoint: python3
     volumes:
       - ".:/app/"
