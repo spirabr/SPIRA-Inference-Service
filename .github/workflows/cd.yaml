@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "INFERENCE_SERVICE_IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/spira-model-server:${{github.ref_name}}" >> $GITHUB_ENV
           echo "MLFLOW_SERVER_IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/spira-mlflow-server:${{github.ref_name}}" >> $GITHUB_ENV
-          echo "INFERENCE_SERVICE_TEST_IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/spira-mlflow-server-test:${{github.ref_name}}" >> $GITHUB_ENV
+          echo "INFERENCE_SERVICE_TEST_IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/spira-model-server-test:${{github.ref_name}}" >> $GITHUB_ENV
 
       - name: Push Image
         run: bash push-image.sh
