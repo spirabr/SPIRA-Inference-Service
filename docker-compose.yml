@@ -24,6 +24,17 @@ services:
     volumes:
       - "./src:/app/"
     
+  k8s-test-image:
+    build:
+      context: .
+      target: dev 
+    image: ${INFERENCE_SERVICE_IMAGE_NAME}
+    entrypoint: python3
+    volumes:
+      - ".:/app/"
+    ports:
+      - 3000:8000
+
   inference-tester:
     build:
       context: .
