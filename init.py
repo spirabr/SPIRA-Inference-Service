@@ -23,16 +23,9 @@ def register_model_in_mlflow():
   mlflow.set_tracking_uri(os.environ["mlflow_conn_url"])
   model = ModelTemplate()
 
-  boto3.connect_s3()
-  s3 = boto3.client('s3')
-
-  #minio is dumb and does not create buckets when they do not exist
-  response = s3.create_bucket(
-      Bucket=os.environ["MLFLOW_BUCKET_NAME"],
-      CreateBucketConfiguration={
-          'LocationConstraint': 'us-east-1'  # Specify the AWS region
-      }
-  )
+  #minio is stupid and does not allow put objects in a bucket not yet created
+  s3_client = boto3.client('s3')
+  s3_client.create_bucket(Bucket=os.environ["MLFLOW_BUCKET_NAME"])
 
   mlflow.pyfunc.log_model(
     artifact_path=os.environ["MLFLOW_BUCKET_NAME"],
