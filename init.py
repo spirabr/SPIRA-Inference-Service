@@ -1,6 +1,6 @@
 import mlflow
 import os
-import boto3
+from minio import Minio
 from typing import List, Tuple
 from mlflow.pyfunc import PythonModel
 import re
@@ -24,11 +24,18 @@ def register_model_in_mlflow():
   model = ModelTemplate()
 
   #minio is stupid and does not allow put objects in a bucket not yet created
-  s3_client = boto3.client('s3')
-  s3_client.create_bucket(Bucket=os.environ["MLFLOW_BUCKET_NAME"])
+  client = Minio(os.environ["minio_conn_url"], access_key=os.environ["minio_access_key"], 
+                 secret_key=os.environ["minio_secret_key"], secure=False)
+
+  bucket_name = os.environ["MLFLOW_BUCKET_NAME"]
+  # Make 'asiatrip' bucket if not exist.
+  found = client.bucket_exists(bucket_name)
+  if not found:
+      client.make_bucket(bucket_name)
+
 
   mlflow.pyfunc.log_model(
-    artifact_path=os.environ["MLFLOW_BUCKET_NAME"],
+    artifact_path=bucket_name,
     registered_model_name=model_name,
     python_model=model
   )
