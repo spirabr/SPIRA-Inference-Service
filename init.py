@@ -1,5 +1,6 @@
 import mlflow
 import os
+import boto
 from typing import List, Tuple
 from mlflow.pyfunc import PythonModel
 import re
@@ -21,6 +22,17 @@ def register_model_in_mlflow():
   print("registering model in mlflow...")
   mlflow.set_tracking_uri(os.environ["mlflow_conn_url"])
   model = ModelTemplate()
+
+  boto.connect_s3()
+  s3 = boto.client('s3')
+
+  #minio is dumb and does not create buckets when they do not exist
+  response = s3.create_bucket(
+      Bucket=os.environ["MLFLOW_BUCKET_NAME"],
+      CreateBucketConfiguration={
+          'LocationConstraint': 'us-east-1'  # Specify the AWS region
+      }
+  )
 
   mlflow.pyfunc.log_model(
     artifact_path=os.environ["MLFLOW_BUCKET_NAME"],
