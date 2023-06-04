@@ -1,6 +1,6 @@
 import mlflow
 import os
-import boto
+import boto3
 from typing import List, Tuple
 from mlflow.pyfunc import PythonModel
 import re
@@ -23,8 +23,8 @@ def register_model_in_mlflow():
   mlflow.set_tracking_uri(os.environ["mlflow_conn_url"])
   model = ModelTemplate()
 
-  boto.connect_s3()
-  s3 = boto.client('s3')
+  boto3.connect_s3()
+  s3 = boto3.client('s3')
 
   #minio is dumb and does not create buckets when they do not exist
   response = s3.create_bucket(
