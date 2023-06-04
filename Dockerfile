@@ -27,7 +27,7 @@ COPY . .
 # --- production image --- #
 FROM base as prod
 
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml poetry.lock init.py /app/
 
 RUN poetry install --no-interaction --no-ansi --no-dev
 
