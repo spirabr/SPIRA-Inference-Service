@@ -50,7 +50,7 @@ def register_model_in_database(name, topic):
   response_dict = json.loads(token_response.text)
   token = response_dict["access_token"]
 
-  requests.post(os.environ["MODEL_CREATION_ENDPOINT"], headers={"Authorization": "Bearer " + token, "Content-Type": "application-json"}, data=json.dumps({"name": name, "publishing_channel": topic}))
+  requests.post(os.environ["MODEL_CREATION_ENDPOINT"], headers={"Authorization": "Bearer " + token, "Content-Type": "application/json"}, data=json.dumps({"name": name, "publishing_channel": topic}))
   print("model successfully registered in database!")
 
 if __name__=="__main__":
