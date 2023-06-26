@@ -59,15 +59,16 @@ async def listen_for_messages_and_respond(
 
     """
     try:
+        logging.info("waiting for inference on channel {}.".format(receiving_channel))
         inference: Inference = await message_service_port.wait_for_message(
             receiving_channel
         )
-        logging.info("inference received.")
+        logging.info("inference received: {}".format(inference))
         inference_files: InferenceFiles = _get_files(
             simple_storage_port, inference
         )
         logging.info("audios received.")
-
+        logging.info("attempting to perform prediction...")
         result_update: ResultUpdate = model_register_port.predict(
             inference, inference_files
         )
