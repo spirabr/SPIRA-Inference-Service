@@ -12,7 +12,7 @@ from core.services.message_listener_service import (
 
 
 from settings import Settings
-
+logging.basicConfig(level = logging.INFO)
 
 async def listen_for_messages_loop(
     simple_storage_port: SimpleStoragePort,

@@ -8,6 +8,7 @@ from core.ports.message_service_port import MessageServicePort
 from core.ports.model_register_port import ModelRegisterPort
 from core.ports.simple_storage_port import SimpleStoragePort
 
+logging.basicConfig(level = logging.INFO)
 
 async def subscribe_to_channel(
     message_service_port: MessageServicePort,

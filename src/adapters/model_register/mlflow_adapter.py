@@ -7,6 +7,7 @@ import os
 import requests
 
 from core.model.inference import Inference, InferenceFiles
+logging.basicConfig(level = logging.INFO)
 
 
 class MLFlowAdapter:

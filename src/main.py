@@ -10,6 +10,8 @@ from core.ports.simple_storage_port import SimpleStoragePort
 from settings import Settings
 
 
+logging.basicConfig(level = logging.INFO)
+
 def configure_ports() -> Ports:
     """Instantiates Ports and Adapters of the services used in the application
 
