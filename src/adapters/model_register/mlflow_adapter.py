@@ -36,7 +36,6 @@ class MLFlowAdapter:
 
         """
         logging.info("running predict on mlflow adapter")
-        logging.info()
         result = self._model.predict([inference.dict(),inference_files.dict()])
         logging.info("result = " + result)
         return result
