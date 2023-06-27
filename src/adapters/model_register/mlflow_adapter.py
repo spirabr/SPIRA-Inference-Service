@@ -18,6 +18,7 @@ class MLFlowAdapter:
         logging.info("connected to mlflow server.")
         mlf.pyfunc.get_model_dependencies(model_path)
         self._model = mlf.pyfunc.load_model(model_uri=model_path)
+        logging.info("model startup attempted. model = ", self._model)
         logging.info("model loaded successfully.")
         
     def predict(
@@ -34,7 +35,11 @@ class MLFlowAdapter:
             and the second element is the string containing the final diagnosis
 
         """
-        return self._model.predict([inference.dict(),inference_files.dict()])
+        logging.info("running predict on mlflow adapter")
+        logging.info()
+        result = self._model.predict([inference.dict(),inference_files.dict()])
+        logging.info("result = " + result)
+        return result
 
     def _wait_for_server_connection(self) -> None:
         os.system("sleep 5")

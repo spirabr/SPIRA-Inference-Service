@@ -1,6 +1,8 @@
 from core.model.inference import Inference, InferenceFiles
 from core.model.result import ResultUpdate
+import logging
 
+logging.basicConfig(level = logging.INFO)
 
 class ModelRegisterPort:
     """Port for the model register and model methods
@@ -26,9 +28,13 @@ class ModelRegisterPort:
             the result update object containing the prediction of the model
 
         """
+
+        logging.info("Attempting to run predict on model register port")
         output, diagnosis = self._model_register_adapter.predict(
             inference, inference_files
         )
+        logging.info("port output = ", output)
+        logging.info("port diagnosis = ", diagnosis)
 
         return ResultUpdate(
             inference_id=inference.id, output=output, diagnosis=diagnosis
