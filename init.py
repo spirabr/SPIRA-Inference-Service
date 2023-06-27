@@ -12,7 +12,7 @@ class ModelTemplate(PythonModel):
 
     def predict(self, context, model_input) -> Tuple[List[float],str]:
       # model predict method should be implemented here
-      pass
+      return ([1.0, 2.0, 3.0, 4.0], "ajuda o maluco que ele ta doente")
 
 def register_model(model_name, model_topic_name):
   register_model_in_database(model_name, model_topic_name)
