@@ -37,7 +37,7 @@ class MLFlowAdapter:
         """
         logging.info("running predict on mlflow adapter")
         result = self._model.predict([inference.dict(),inference_files.dict()])
-        logging.info("result = " + result)
+        logging.info("result = ", result)
         return result
 
     def _wait_for_server_connection(self) -> None:
